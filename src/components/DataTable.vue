@@ -1,8 +1,8 @@
 <template>
   <v-data-table
     :headers="headers"
-    :items="desserts"
-    sort-by="calories"
+    :items="categorias"
+    sort-by="nombre"
     class="elevation-1"
   >
     <template v-slot:top>
@@ -28,7 +28,7 @@
               v-bind="attrs"
               v-on="on"
             >
-              New Item
+              Agregar Categoria
             </v-btn>
           </template>
           <v-card>
@@ -46,7 +46,7 @@
                   >
                     <v-text-field
                       v-model="editedItem.name"
-                      label="Dessert name"
+                      label="Dessert ndsdsdame"
                     ></v-text-field>
                   </v-col>
                   <v-col
@@ -152,6 +152,9 @@
 </template>
 
 <script>
+  import axios from 'axios'
+
+
   export default {
     data: () => ({
       dialog: false,
@@ -168,7 +171,7 @@
         { text: 'Actions', value: 'actions', sortable: false },
       ],
       desserts: [],
-      editedIndex: -1,
+      categorias: [],
       editedItem: {
         nombre: '',
         descripcion: 0,
@@ -199,7 +202,7 @@
     },
 
     created () {
-      this.initialize()
+      this.list()
     },
 
     methods: {
@@ -216,7 +219,11 @@
       },
 
       list(){
-        
+        axios.get('http://Localhost:3000/api/categoria/list')
+        .then(reponse =>{
+          this.categorias = response.data;
+        })
+        .catch.log(error);
       },
 
       editItem (item) {
